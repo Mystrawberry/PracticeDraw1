@@ -59,6 +59,7 @@ public class Practice11PieChartView extends View {
         mPaint.setStyle(Paint.Style.FILL);
 
         mLinePaint.setStyle(Paint.Style.STROKE);
+        mLinePaint.setStrokeWidth(3);
         mLinePaint.setColor(getResources().getColor(R.color.p_4));
 
         mTextPaint.setStyle(Paint.Style.STROKE);
@@ -90,24 +91,61 @@ public class Practice11PieChartView extends View {
         int startAngle = 0;
         for (int i = 0; i < mAngleIntArr.length; i++) {
             mPaint.setColor(mColorIntArr[i]);
-            //起始角度5，弧形划过的角度2，下一个从9开始 2+5+2,  9 6  15
-            canvas.drawArc(i == 5 ? mRedRectF : mRectF, startAngle + arcSpaceWidth, mAngleIntArr[i] - arcSpaceWidth, true, mPaint);
+
+            int lineAngle = startAngle + arcSpaceWidth / 2 + mAngleIntArr[i] / 2;
+
+
+            //绘制弧
+            canvas.drawArc(i == 5 ? mRedRectF : mRectF,
+                    startAngle + arcSpaceWidth, mAngleIntArr[i] - arcSpaceWidth, true, mPaint);
             startAngle = startAngle + mAngleIntArr[i];
 
-            // 绘制线条
-            //int linex =
 
-//            mPath.moveTo();
+            // 绘制线条 这个地方需要判断角度
+            float lineStartX = getLineStartX(100 + mDiameter / 2, mDiameter / 2, lineAngle);
+            float lineStartY = getLineStartY(100 + mDiameter / 2, mDiameter / 2, lineAngle);
+            mPath.moveTo(lineStartX, lineStartY);
 
+            //这里只处理第一个角度的值 大于270时角度的问题
+            if (startAngle > 270) {
+                //记录结束的X的坐标点和结束的Y坐标点
+                mPath.lineTo(lineStartX + 50, lineStartY);
+            } else {
+                mPath.lineTo(i == 5 ? lineStartX - 20 : lineStartX, i == 5 ? lineStartY - 20 : lineStartY + 50);
+            }
+
+
+            canvas.drawPath(mPath, mLinePaint);
 
             //绘制text
-
 
         }
     }
 
+
     //半径：r
-    // 角度：a0
-//        x1 = x0 + r * cos(ao * 3.14 /180 )
-//        y1 = y0 + r * sin(ao * 3.14 /180 )
+    // 角度：a0  //角度是用startAngle+sweepAngle/2  获取每个弧的中点
+    // x1 = x0 + r * cos(ao * 3.14 /180 )
+    //  y1 = y0 + r * sin(ao * 3.14 /180 )
+
+    /**
+     * @param o     圆心点
+     * @param r     圆的半径
+     * @param angle 角度
+     * @return 绘制线条的X起始点
+     */
+    private float getLineStartX(float o, float r, int angle) {
+        return (float) (o + r * Math.cos(angle * Math.PI / 180));
+    }
+
+    /**
+     * @param o     圆心点
+     * @param r     圆的半径
+     * @param angle 角度
+     * @return 绘制线条的Y起始点
+     */
+    private float getLineStartY(float o, float r, int angle) {
+        return (float) (o + r * Math.sin(angle * Math.PI / 180));
+    }
+
 }
