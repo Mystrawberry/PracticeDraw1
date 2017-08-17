@@ -71,6 +71,7 @@ public class Practice10HistogramView extends View {
         canvas.drawPath(mPath, mPaint);
     }
 
+    //int s = 85+spaceWidth;
     private void drawHistogram(Canvas canvas) {
         for (int i = 0; i < 7; i++) {
             mPaint.setStyle(Paint.Style.FILL);
@@ -78,7 +79,10 @@ public class Practice10HistogramView extends View {
             // 每个直方图开始的纵坐标
             float startY = new Random().nextFloat() * 300;
             float start = i == 0 ? startX + spaceWidth : startX + (i + 1) * spaceWidth + i * mRectWidth;
-            canvas.drawRect(start, startY, start + mRectWidth, endY, mPaint);
+
+             canvas.drawRect(start, startY, start + mRectWidth, endY, mPaint);
+            //canvas.drawRect(s, startY, s+mRectWidth, endY, mPaint);
+            //s = s + mRectWidth + spaceWidth;
 
             mPaint.setColor(Color.WHITE);
             //这里的text需要测量，在进行绘制
