@@ -8,8 +8,6 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import static android.R.attr.path;
-
 public class Practice9DrawPathView extends View {
     private final Paint mPaint = new Paint();
     private Path mPath = new Path(); // 初始化 Path 对象
